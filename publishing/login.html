@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./common.js"></script>
+    <title>soccer player</title>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="wrap">
+        <div id="header">
+            <h1>6조 Online</h1>
+        </div>
+        <div class="contents">
+            <!-- login -->
+            <!-- <div class="login-area">
+                <h2>Login</h2>
+                <p>ID <input type="text" id="userID" placeholder="아이디를 입력하세요"></p>
+                <p>PW <input type="password" id="userPW" placeholder="비밀번호를 입력하세요"></p>
+                <button type="button" id="login">로그인</button>
+                <button type="button" id="join">회원가입</button>
+            </div> -->
+            <!-- join -->
+            <div class="login-area">
+                <h2>Join</h2>
+                <p>ID <input type="text" id="userID" placeholder="아이디를 입력하세요"></p>
+                <p class="alert">중복되는 아이디 입니다. 다른 아이디를 입력하세요.</p> <!-- 중복아이디 검사는 불가능하시면 PASS-->
+                <p>PW <input type="password" id="userPW" placeholder="비밀번호를 입력하세요"></p>
+                <div class="radioBox">
+                    <div><input type="radio" id="user" name="role" value="user"><label for="user">사용자</label></div>
+                    <div><input type="radio" id="admin" name="role" value="admin"><label for="admin">관리자</label></div>
+                </div>
+                <button type="button" id="join">회원가입 하기</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./common.js"></script>
+    <title>soccer player</title>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="wrap">
+        <div id="header">
+            <h1>6조 Online</h1>
+        </div>
+        <div class="contents">
+            <div class="adminReg">
+                <div class="imgReg">
+                    <div class="imgthumb"></div>
+                    <input type="file" id="profileImg" name="profileImg" accept="image/png, image/jpeg">
+                    <label for="profileImg">사진 등록하기</label>
+                </div>
+                <p>선수 이름<input type="text" id="name" placeholder="입력해주세요."></p>
+                <p>소속 팀<input type="text" id="team" placeholder="입력해주세요."></p>
+                <p>등 번호<input type="text" id="back-number" placeholder="입력해주세요."></p>
+                <p>포지션<input type="text" id="position" placeholder="입력해주세요."></p>
+                <p>나이<input type="text" id="age" placeholder="입력해주세요."></p>
+            </div>
+            <div class="btnWrap">
+                <button type="button" id="register" class="cmnbtn">등록하기</button>
+                <button type="button" id="edit" class="cmnbtn">수정하기</button>
+                <button type="button" id="remove" class="cmnbtn">삭제하기</button>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
