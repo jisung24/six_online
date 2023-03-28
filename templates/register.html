@@ -11,8 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../public/style.css" />
-    <script src="../publishing/common.js"></script>
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <script src="../static/js/common.js"></script>
     <title>soccer player</title>
 </head>
 
@@ -20,7 +20,11 @@
     <div class="bg"></div>
     <div class="wrap">
         <div id="header">
-            <h1>6조 Online</h1>
+            <h1>
+                <a href="/">
+                    6조 Online
+                </a>
+            </h1>
         </div>
         <div class="contents">
             <div class="adminReg">
@@ -29,6 +33,8 @@
                     <input type="file" id="profileImg" name="profileImg" accept="image/png, image/jpeg">
                     <label for="profileImg">사진 등록하기</label>
                 </div>
+                <p>선수 id<input type="text" id="player-id" placeholder="입력해주세요."></p> 
+                <!-- 선수 id까지 넣었습니다!  -->
                 <p>선수 이름<input type="text" id="name" placeholder="입력해주세요."></p>
                 <p>소속 팀<input type="text" id="team" placeholder="입력해주세요."></p>
                 <p>등 번호<input type="text" id="back-number" placeholder="입력해주세요."></p>
