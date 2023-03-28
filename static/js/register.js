@@ -1,5 +1,2 @@
 "use strict";
-// 선수 등록 javascript
-
-// 등록 버튼을 누르면 등록 register api를 호출한다!
-const registerBtn = document.querySelector("#register");
+// fetch 면 쓰려했는데, form으로 바꿔서 일단은 남겨둘게여!

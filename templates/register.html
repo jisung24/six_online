@@ -26,28 +26,41 @@
                 </a>
             </h1>
         </div>
-        <div class="contents">
+        <form class="contents" method="POST" action="/player">
             <div class="adminReg">
                 <div class="imgReg">
                     <div class="imgthumb"></div>
                     <input type="file" id="profileImg" name="profileImg" accept="image/png, image/jpeg">
                     <label for="profileImg">사진 등록하기</label>
                 </div>
-                <p>선수 id<input type="text" id="player-id" placeholder="입력해주세요."></p> 
+                <p>선수 id<input type="text" id="player-id" placeholder="입력해주세요." name="player_id"></p> 
                 <!-- 선수 id까지 넣었습니다!  -->
-                <p>선수 이름<input type="text" id="name" placeholder="입력해주세요."></p>
-                <p>소속 팀<input type="text" id="team" placeholder="입력해주세요."></p>
-                <p>등 번호<input type="text" id="back-number" placeholder="입력해주세요."></p>
-                <p>포지션<input type="text" id="position" placeholder="입력해주세요."></p>
-                <p>나이<input type="text" id="age" placeholder="입력해주세요."></p>
+                <p>선수 이름<input type="text" id="name" placeholder="입력해주세요." name="player_name"></p>
+                <p>소속 팀<input type="text" id="team" placeholder="입력해주세요." name="player_team"></p>
+                <p>등 번호<input type="text" id="back-number" placeholder="입력해주세요." name="player_back_number"></p>
+                <p>포지션
+                    <select name="player_position" id="position">
+                        <option value="st">st</option>
+                        <option value="rw">rw</option>
+                        <option value="lw">lw</option>
+                        <option value="cam">cam</option>
+                        <option value="cdm">cdm</option>
+                        <option value="cm">cm</option>
+                        <option value="rb">rb</option>
+                        <option value="cb">cb</option>
+                        <option value="lb">lb</option>
+                        <option value="gk">gk</option>
+                    </select>
+                </p>
+                <p>나이<input type="text" id="age" placeholder="입력해주세요." name="player_age"></p>
             </div>
             <div class="btnWrap">
-                <button type="button" id="register" class="cmnbtn">등록하기</button>
-                <button type="button" id="edit" class="cmnbtn">수정하기</button>
-                <button type="button" id="remove" class="cmnbtn">삭제하기</button>
+                <button type="submit" id="register" class="cmnbtn">등록하기</button>
+                <button type="submit" id="edit" class="cmnbtn">수정하기</button>
+                <button type="submit" id="remove" class="cmnbtn">삭제하기</button>
             </div>
 
-        </div>
+        </form>
     </div>
 </body>
 

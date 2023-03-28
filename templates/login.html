@@ -28,10 +28,10 @@
         </div>
         <div class="contents">
             <!-- login -->
-            <form class="login-area">
+            <form class="login-area" action="/api/login" method="POST">
                 <h2>Login</h2>
-                <p>ID <input type="text" id="userID" placeholder="아이디를 입력하세요"></p>
-                <p>PW <input type="password" id="userPW" placeholder="비밀번호를 입력하세요"></p>
+                <p>ID <input type="text" id="userID" placeholder="아이디를 입력하세요" name="userID"></p>
+                <p>PW <input type="password" id="userPW" placeholder="비밀번호를 입력하세요" name="userPW"></p>
                 <div class="btn-box">
                     <input type="submit" id="login" value="LOGIN">
                     <button id="join">
