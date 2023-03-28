@@ -8,15 +8,15 @@ from pymongo import MongoClient
 from flask_jwt_extended import *
 from flask_jwt_extended import JWTManager
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
+import datetime
 from functools import wraps
 import hashlib
 
 app = Flask(__name__) # flask를 실행 
-app.config.update(
-    DEBUG = True,
-    JWT_SECRET_KEY = 'G6',
-)
+
+JWT_SECRET_KEY = 'G6'
 jwt = JWTManager(app)
 
 client = MongoClient('localhost', 27017)
@@ -27,18 +27,31 @@ playerDB = client['player'] # 축구선수 db
 playercol = playerDB['players'] # 축구선수 column
 
 
+SECRET_KEY = 'G6'
+
 
 # << GET : 메인페이지('/') >>  
 # 메인페이지 : ❗️로그인 한 role이 admin!!!!!!!
 @app.route('/', methods = ['GET']) # 라우팅 
-@jwt_required() # jwt가 필요하다~ 
+# @jwt_required() # jwt가 필요하다~ 
 def print_hello(): # callback함수 
     # 사용자 전용...! 
-    cur_user = get_jwt_identity()
-    if cur_user is None:
-        return "USER ONLY"
-    else:
-        return "Hi" + cur_user
+    # cur_user = get_jwt_identity()
+    # if cur_user is None:
+    #     return "USER ONLY"
+    # else:
+    #     return "Hi" + cur_user
+    result = playercol.find({}, {"_id" : 0})
+    # dic = json.loads(result)
+    # print(dic)
+    arr = []
+    for x in result:
+        arr.append(x)
+
+    # 그냥 쉽게 생각하지 그랬어...... 하
+    return render_template('index.html', playerArr = arr)
+
+
 
 
 
@@ -112,7 +125,8 @@ def player_register():
 
 @app.route('/login/index', methods = ['GET'])
 def login_page():
-    return render_template('login.html')
+    msg = request.args.get("msg")
+    return render_template('login.html', msg=msg)
 
 # 진영: 등록된 선수 불러오기
 @app.route("/player", methods=["GET"])
@@ -121,27 +135,41 @@ def player_list():
     return jsonify({'result': all_players})
 
 
-# 단순 비교해보는 로그인 코드 
+# 로그인을 하고 jwt를 발급받는 코드!!!!!! 
 # ❗️access token 생성해야함❗️
 @app.route('/api/login', methods = ['POST'])
 def login_proc():
     # return "Dwdawdawdawdawdawd"
+    
     input_data = request.form
     # 입력한 id와 pw를 받아옴!
     userID = input_data['userID']
     userPW = input_data['userPW']
+    # 똑같이 암호화! 한 후 암호화 돼 있는 db속 비번과 비교한다.
+    pw_hash = hashlib.sha256(userPW.encode('utf-8')).hexdigest()
 
-    result = usercol.find_one({ 'userID' : userID, 'userPW' : userPW }, {'_id' : 0})
+    # 암호화 한 후 찾아주기 
+    result = usercol.find_one({ 'userID' : userID, 'userPW' : pw_hash }, {'_id' : 0})
     # 🔴 저렇게 찾아주자...! 
     # mongodb에 있는 _id 는 ObjectID이거 출력하지 맣자.. => error
     # {}면 
     # None 처리 방법!!!!! 
-    if result is not None: # id field가 있다면!!! 
-        return redirect(url_for('print_hello'))
+    if result is not None:
+        role_receive = result['userRole']
+        payload = {
+            'id': userID,
+            'role' : role_receive,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=10000)
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        return jsonify({'result': 'success', 'role': role_receive,'token': token})
     else:
-        # 일치하지 않는경우!
-        return redirect(url_for('login_page')) # 다시 로그인 페이지로!
-    
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
+# 일단 관리자는 이따가..
+
+
+
 
 
 
@@ -158,3 +186,13 @@ def login_proc():
 
 # id pw 비교작업이 끝난 로그인 할 때
 # ❗️missing authorization header flask❗️
+
+
+# 'JWTManager' object has no attribute 'encode'
+
+# 이유없이 안 뜸... 
+
+
+# Object of type Cursor is not JSON serializable
+# result = playercol.find({}, {"_id" : 0})
+    # return jsonify(list(result))

@@ -49,9 +49,10 @@
                 <!-- 관리자 : 등록하기 버튼 -->
                 <div class="card adminCard">
                     <button tyle="button" id="register">
-                        <a href="/register/index"></a>
+                        <a href="/register/index">등록하기</a>
                     </button>
                 </div>
+                {% for i in range(0, playerArr | length) %}
                 <div class="card">
                     <!-- 사용자 : 좋아요 버튼 오른쪽 상단에 노출 -->
                     <button type="button" class="like">
@@ -64,48 +65,13 @@
                         <i class="fas fa-pen"></i>
                     </button> -->
                     <div class="imgbox"><img src="./img/player.jfif" class="player-img"></div>
-                    <p class="name">손흥민</p>
-                    <p class="team">토트넘 훗스퍼FC</p>
-                    <p class="back-number">7</p>
-                    <p class="position">FW공격수</p>
-                    <p class="age">1992. 7. 8.</p>
+                    <p class="name">{{ playerArr[i].player_name }}</p>
+                    <p class="team">{{ playerArr[i].player_team }}</p>
+                    <p class="back-number">{{ playerArr[i].player_back_number }}</p>
+                    <p class="position">{{ playerArr[i].player_position }}</p>
+                    <p class="age">{{ playerArr[i].player_age }}</p>
                 </div>
-                <div class="card">
-                    <button type="button" class="like">
-                        <!-- <i class="fas fa-heart"></i> -->
-                        <i class="far fa-heart likeIcon"></i>
-                    </button>
-                    <div class="imgbox"><img src="./img/player.jfif" class="player-img"></div>
-                    <p class="name">손흥민</p>
-                    <p class="team">토트넘 훗스퍼FC</p>
-                    <p class="back-number">7</p>
-                    <p class="position">FW공격수</p>
-                    <p class="age">1992. 7. 8.</p>
-                </div>
-                <div class="card">
-                    <button type="button" class="like">
-                        <!-- <i class="fas fa-heart"></i> -->
-                        <i class="far fa-heart likeIcon"></i>
-                    </button>
-                    <div class="imgbox"><img src="./img/player.jfif" class="player-img"></div>
-                    <p class="name">손흥민</p>
-                    <p class="team">토트넘 훗스퍼FC</p>
-                    <p class="back-number">7</p>
-                    <p class="position">FW공격수</p>
-                    <p class="age">1992. 7. 8.</p>
-                </div>
-                <div class="card">
-                    <button type="button" class="like">
-                        <!-- <i class="fas fa-heart"></i> -->
-                        <i class="far fa-heart"></i>
-                    </button>
-                    <div class="imgbox"><img src="./img/player.jfif" class="player-img"></div>
-                    <p class="name">손흥민</p>
-                    <p class="team">토트넘 훗스퍼FC</p>
-                    <p class="back-number">7</p>
-                    <p class="position">FW공격수</p>
-                    <p class="age">1992. 7. 8.</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
