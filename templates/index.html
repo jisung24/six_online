@@ -40,10 +40,11 @@
         </div>
         <div class="contents">
             <!-- search area -->
-            <div class="search-area">
-                <input type="text" id="searchBox" placeholder="선수 이름을 입력해주세요!">
-                <button type="button" id="searchBtn">검색하기</button>
-            </div>
+            <form class="search-area" action="/players" method="GET">
+                <!-- /playsers? player_name : "dwdwdwd" -->
+                <input type="text" id="searchBox" placeholder="선수 이름을 입력해주세요!" name="player_name">
+                <button type="submit" id="searchBtn" value="검색">검색하기</button>
+            </form>
             <!-- list area -->
             <div class="list-area">
                 <!-- 관리자 : 등록하기 버튼 -->
@@ -53,7 +54,7 @@
                     </button>
                 </div>
                 {% for i in range(0, playerArr | length) %}
-                <div class="card">
+                <div class="card" data-id='{{ playerArr[i].player_id }}'>
                     <!-- 사용자 : 좋아요 버튼 오른쪽 상단에 노출 -->
                     <button type="button" class="like">
                         <!-- <i class="fas fa-heart"></i>-->

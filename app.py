@@ -163,9 +163,19 @@ def login_proc():
 # 일단 관리자는 이따가..
 
 
-
-
-
+# 선수 검색 
+# /players ? player_name = "dwadaw"
+# 즉, url에 파라미터와 값을 함께 전달하는 형식 
+# 글자 부분으로 입력하면 바로 값 return해줌 
+@app.route('/players', methods=['GET'])
+def search_result():
+    search = request.args.get('player_name') # player_name받아옴 
+    # db에서 검색어가 들어간 것 찾기...! 
+    find_player_name = playercol.find({'$or' : [{ 'player_name' : {'$regex' : search}}]},{'_id' : 0})
+    player_arr = []
+    for x in find_player_name:
+        player_arr.append(x)
+    return render_template('index.html', playerArr = player_arr)
 
 
 
