@@ -19,7 +19,7 @@ app = Flask(__name__) # flask를 실행
 JWT_SECRET_KEY = 'G6'
 jwt = JWTManager(app)
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('https://cloud.mongodb.com/v2/64198d47fb050b453791e1e5#/metrics/replicaSet/64198d95dd28196ba96ad7c3/explorer/dbsparta/bucket/find')
 userDB = client['user'] # 회원 db (관리자 사용자 싹 다 하나로 구분없이 모을게요!)
 usercol = userDB['users'] # 회원 users column
 

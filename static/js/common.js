@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <p class="position">${position}</p>
                                     <p class="age">${age}</p>
                                 </div>`
-                                
+
                 if(searchName == a['player_name']){
                     $('.list-area').append(temp_html)
                 } else {

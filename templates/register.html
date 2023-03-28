@@ -13,6 +13,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css" />
     <script src="../static/js/common.js"></script>
+    
     <title>soccer player</title>
 </head>
 
@@ -30,10 +31,11 @@
             <div class="adminReg">
                 <div class="imgReg">
                     <div class="imgthumb"></div>
-                    <input type="file" id="profileImg" name="profileImg" accept="image/png, image/jpeg">
+                    <input type="file" id="profileImg" name="profileImg" accept="image/png, image/jpeg"
+                        onchange="setThumbnail();">
                     <label for="profileImg">사진 등록하기</label>
                 </div>
-                <p>선수 id<input type="text" id="player-id" placeholder="입력해주세요." name="player_id"></p> 
+                <p>선수 id<input type="text" id="player-id" placeholder="입력해주세요." name="player_id"></p>
                 <!-- 선수 id까지 넣었습니다!  -->
                 <p>선수 이름<input type="text" id="name" placeholder="입력해주세요." name="player_name"></p>
                 <p>소속 팀<input type="text" id="team" placeholder="입력해주세요." name="player_team"></p>
@@ -63,5 +65,17 @@
         </form>
     </div>
 </body>
+<script>
+    function setThumbnail() {
+        let reader = new FileReader();
 
+        reader.onload = function (e) {
+            let img = document.createElement("img");
+            img.setAttribute("src", e.target.result);
+            document.querySelector(".imgthumb").appendChild(img);
+        };
+
+        reader.readAsDataURL(e.target.files[0]);
+    }
+</script>
 </html>
