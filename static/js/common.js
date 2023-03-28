@@ -1,5 +1,46 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    // 진영 : 선수 검색 
+    let searchBtn = document.querySelector('#searchBtn')
+
+    searchBtn.addEventListener('click',searchPlayer)
+
+    function searchPlayer(){
+        fetch('/player', { method: "GET", body: formData, }).then((res) => res.json()).then((data) => {
+            let row = data['result']
+            let searchName = $('#searchBox').val()
+
+            row.forEach((a)=>{
+                let img = a['player_img']
+                let name = a['player_name']
+                let team = a['player_team']
+                let back_number = a['player_back_number']
+                let position = a['player_position']
+                let age = a['player_age']
+                let like = a['player_like']
+
+                let temp_html = `<div class="card">
+                                    <button type="button" class="like">
+                                        <i class="${like} fa-heart likeIcon"></i>
+                                    </button>
+                                    <div class="imgbox"><img src="${img}" class="player-img"></div>
+                                    <p class="name">${name}</p>
+                                    <p class="team">${team}</p>
+                                    <p class="back-number">${back_number}</p>
+                                    <p class="position">${position}</p>
+                                    <p class="age">${age}</p>
+                                </div>`
+                                
+                if(searchName == a['player_name']){
+                    $('.list-area').append(temp_html)
+                } else {
+                    alert('검색 결과가 없습니다.')
+                }
+                
+            })
+        });
+    }
+
     // 사용자 : 좋아요 토글 버튼
     let likeBtn = document.querySelector('.like');
     let likeBtnIcon = document.querySelector('.likeIcon');

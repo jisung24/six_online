@@ -114,6 +114,12 @@ def player_register():
 def login_page():
     return render_template('login.html')
 
+# 진영: 등록된 선수 불러오기
+@app.route("/player", methods=["GET"])
+def player_list():
+    all_players = list(playerDB.player.find({},{'_id':False}))
+    return jsonify({'result': all_players})
+
 
 # 단순 비교해보는 로그인 코드 
 # ❗️access token 생성해야함❗️
