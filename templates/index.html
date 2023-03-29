@@ -13,6 +13,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css"/>
     <script defer src="../static/js/common.js"></script>
+    <script defer src="../static/js/deletePlayer.js"></script>
     <title>soccer player</title>
 </head>
 
@@ -29,11 +30,14 @@
                 <!-- 아직 로그인 안 한 상태!  -->
                 <li>
                     <!-- 선수 등록( 회원가입 x ) -->
-                    <a href="/register/index">REGISTER</a>
+                    {% if role == 'admin' %}
+                    <a href="/register/index" class="">REGISTER</a>
+                    {% endif %}
                 </li>
                 <li>
                     <!-- 로그인을 했다면 login대신 logout버튼으로! -->
-                    <a href="/login/index">LOGIN</a>
+                    <a href="jvascript:void()">LOGOUT</a>
+                    <!-- 어차피 맨 처음 로그인 페이지로 가서 안 할 수가 없음..!  -->
                 </li>
             </ul>
             <button type="button" class="all_like"><i class="fas fa-heart"></i></button>
@@ -48,13 +52,16 @@
             <!-- list area -->
             <div class="list-area">
                 <!-- 관리자 : 등록하기 버튼 -->
+                {% if role == 'admin' %}
                 <div class="card adminCard">
                     <button tyle="button" id="register">
-                        <a href="/register/index">등록하기</a>
+                        <a href="/register/index" id="{{ role }}">등록하기</a>
                     </button>
                 </div>
+                {% endif %}
+
                 {% for i in range(0, playerArr | length) %}
-                <div class="card" data-id='{{ playerArr[i].player_id }}'>
+                <div class="card playerCard" data-id='{{ playerArr[i].player_id }}'>
                     <!-- 사용자 : 좋아요 버튼 오른쪽 상단에 노출 -->
                     <button type="button" class="like">
                         <!-- <i class="fas fa-heart"></i>-->
@@ -62,9 +69,11 @@
                     </button>
 
                     <!-- 관리자 : edit버튼 오른쪽 상단에 노출 -->
-                    <!-- <button type="button" class="edit">
-                        <i class="fas fa-pen"></i>
-                    </button> -->
+                    {% if role == 'admin' %}
+                    <button type="button" class="delete_button" onclick= callDeleteAPI() >
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                    {% endif %}
                     <div class="imgbox"><img src="{{ playerArr[i].player_photo }}" class="player-img"></div>
                     <p class="name pro">이름 : {{ playerArr[i].player_name }}</p>
                     <p class="team pro">팀 : {{ playerArr[i].player_team }}</p>
@@ -76,6 +85,7 @@
             </div>
         </div>
     </div>
+    
 </body>
 
 </html>

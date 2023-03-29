@@ -34,19 +34,36 @@ def print_hello(): # callback함수
         token_receive = request.cookies.get('mytoken')
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         print(payload)  
-        result = playercol.find({}, {"_id" : 0})
-    # dic = json.loads(result)
-    # print(dic)
-        arr = []
-        for x in result:
-            arr.append(x)
+        # 일단 userID를 가져온다
+        # ❗️로그인이 됐을 때..❗️
+        result = usercol.find_one({'userID': payload['userID'] }, {'_id' : 0})
+        # 🟡 관리자 일 때 🟡
+        if result['userRole'] == 'admin':
+            result = playercol.find({}, {"_id" : 0})
+        # dic = json.loads(result)
+        # print(dic)
+            arr = []
+            for x in result:
+                arr.append(x)
 
-    # 그냥 쉽게 생각하지 그랬어...... 하
-        return render_template('index.html', playerArr = arr)
+        # 그냥 쉽게 생각하지 그랬어...... 하
+            return render_template('index.html', playerArr = arr, role = "admin")
+        # 🟡 사용자 일 때 🟡
+        else:
+            result = playercol.find({}, {"_id" : 0})
+        # dic = json.loads(result)
+        # print(dic)
+            arr = []
+            for x in result:
+                arr.append(x)
+
+        # 그냥 쉽게 생각하지 그랬어...... 하
+            return render_template('index.html', playerArr = arr, role = "user")
+
     except jwt.ExpiredSignatureError:
-        return redirect("http://localhost:5000/")
+        return redirect(url_for("login_page", msg="로그인 시간이 만료되었습니다!"))
     except jwt.exceptions.DecodeError:
-        return redirect("http://localhost:5000/")
+        return redirect(url_for("login_page", msg="로그인 정보가 존재하지 않습니다!"))
 
 
 
@@ -145,7 +162,7 @@ def sign_in():
         print(f"result >> {result}") # user 찾아짐! 
         payload = {
             'userID': username_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=10)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -172,6 +189,9 @@ def search_result():
         player_arr.append(x)
     return render_template('index.html', playerArr = player_arr)
 
+
+# 🔴 선수 삭제 🔴
+# DELETE : /players/:id
 
 
 
