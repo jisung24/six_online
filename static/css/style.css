@@ -45,6 +45,15 @@ li {
 .list-area .card .pro:nth-child(2) { font-size : 1.2rem; font-weight : 500;}
 .list-area .card .pro:nth-child(3) { font-size : 1.3rem; font-weight : 700; font-style : italic; color : gray;}
 .list-area .card .position{ text-transform: uppercase; } /* 포지션은 싹 다 대문자로 바꿀게여! */
+.list-area .card .delete_button { position : absolute; top : -5%; left : -5%;
+    padding : 7px 7px;
+    border-radius : 5px;
+    z-index : 11111;
+}
+.list-area .card .delete_button:hover {
+    background-color: black;
+    color : white;
+}
 .adminCard{position: relative;}
 .adminCard #register{position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);width:80%;height:60px;background-color: #000;color:#fff;font-size:28px;border: none;border-radius: 15px;}
 
