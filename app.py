@@ -192,7 +192,15 @@ def search_result():
 
 # 🔴 선수 삭제 🔴
 # DELETE : /players/:id
-
+@app.route('/players/<string:id>', methods = ['POST'])
+def delete_player(id):
+    player_id = id
+    print(player_id + "번!!")
+    find_player = playercol.find_one({'player_id' : player_id}, {'_id' : 0})
+    print(find_player)
+    playercol.delete_one(find_player)
+    return redirect(url_for('print_hello'))
+    # findPlayers = playercol.find_one({ 'player_id' : })
 
 
 
