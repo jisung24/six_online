@@ -6,18 +6,13 @@ from flask import Flask, render_template, request, redirect, json ,url_for, flas
  
 from pymongo import MongoClient
 from flask_jwt_extended import *
-from flask_jwt_extended import JWTManager
 import jwt
-from datetime import datetime
-from datetime import timedelta
 import datetime
-from functools import wraps
 import hashlib
 
 app = Flask(__name__) # flask를 실행 
 
 JWT_SECRET_KEY = 'G6'
-jwt = JWTManager(app)
 
 client = MongoClient('localhost', 27017)
 userDB = client['user'] # 회원 db (관리자 사용자 싹 다 하나로 구분없이 모을게요!)
@@ -35,21 +30,23 @@ SECRET_KEY = 'G6'
 @app.route('/', methods = ['GET']) # 라우팅 
 # @jwt_required() # jwt가 필요하다~ 
 def print_hello(): # callback함수 
-    # 사용자 전용...! 
-    # cur_user = get_jwt_identity()
-    # if cur_user is None:
-    #     return "USER ONLY"
-    # else:
-    #     return "Hi" + cur_user
-    result = playercol.find({}, {"_id" : 0})
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        print(payload)  
+        result = playercol.find({}, {"_id" : 0})
     # dic = json.loads(result)
     # print(dic)
-    arr = []
-    for x in result:
-        arr.append(x)
+        arr = []
+        for x in result:
+            arr.append(x)
 
     # 그냥 쉽게 생각하지 그랬어...... 하
-    return render_template('index.html', playerArr = arr)
+        return render_template('index.html', playerArr = arr)
+    except jwt.ExpiredSignatureError:
+        return redirect("http://localhost:5000/")
+    except jwt.exceptions.DecodeError:
+        return redirect("http://localhost:5000/")
 
 
 
@@ -65,7 +62,7 @@ def player_register_page():
 def sign_up_page():
     return render_template('signUp.html')
 
-# << POST : 회원가입 로직처리('/api/new') >> 
+# 🔴 회원가입 🔴 로직처리('/api/new') >> 
 @app.route('/api/new', methods = ['POST'])
 def save_user():
     user_id = request.form['userID'] # user ID 가져옴
@@ -80,6 +77,7 @@ def save_user():
         'userID' : user_id,
         'userPW' : pw_hash,
         'userRole' : user_role,
+        'userLikes' : []
     }
     # 중복검사! 
     arr = []
@@ -93,10 +91,11 @@ def save_user():
         return redirect(url_for('login_page'))
 
 
-# 선수 등록 : ❗️로그인 한 role이 admin!!!!!!!
+# 🔴 선수 등록 🔴 : ❗️로그인 한 role이 admin!!!!!!!
 @app.route('/player', methods = ['POST'])
 def player_register():
     player_id = request.form['player_id']
+    player_photo = request.form['player_photo']
     player_name = request.form['player_name']
     player_team = request.form['player_team']
     player_back_number = request.form['player_back_number']
@@ -105,6 +104,7 @@ def player_register():
 
     player = {
         'player_id' : player_id,
+        'player_photo' : player_photo, # 문자열 
         'player_name' : player_name,
         'player_team' : player_team,
         'player_back_number' : player_back_number,
@@ -123,47 +123,42 @@ def player_register():
         return redirect(url_for('print_hello'))
     
 
+
+# 로그인 페이지 
 @app.route('/login/index', methods = ['GET'])
 def login_page():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
-
 # 로그인을 하고 jwt를 발급받는 코드!!!!!! 
 # ❗️access token 생성해야함❗️
-@app.route('/api/login', methods = ['POST'])
-def login_proc():
-    # return "Dwdawdawdawdawdawd"
-    
-    input_data = request.form
-    # 입력한 id와 pw를 받아옴!
-    userID = input_data['userID']
-    userPW = input_data['userPW']
-    # 똑같이 암호화! 한 후 암호화 돼 있는 db속 비번과 비교한다.
-    pw_hash = hashlib.sha256(userPW.encode('utf-8')).hexdigest()
+@app.route('/api/login', methods=['POST'])
+def sign_in():
+    # 로그인
+    username_receive = request.form['userID']
+    password_receive = request.form['userPW']
 
-    # 암호화 한 후 찾아주기 
-    result = usercol.find_one({ 'userID' : userID, 'userPW' : pw_hash }, {'_id' : 0})
-    # 🔴 저렇게 찾아주자...! 
-    # mongodb에 있는 _id 는 ObjectID이거 출력하지 맣자.. => error
-    # {}면 
-    # None 처리 방법!!!!! 
-    if result is not None:
-        role_receive = result['userRole']
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    result = usercol.find_one({'userID': username_receive, 'userPW': pw_hash})
+
+    if result is not None: # result 찾았음 
+        print(f"result >> {result}") # user 찾아짐! 
         payload = {
-            'id': userID,
-            'role' : role_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=10000)
+            'userID': username_receive,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        return jsonify({'result': 'success', 'role': role_receive,'token': token})
-    else:
-        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+        return jsonify({'result': 'success', 'token': token})
+    # 찾지 못하면
+    # ❗️찾는 거, 찾지 못 하는 거 돌아가긴 해!❗️
+    else:
+        return jsonify({'result' : 'fail'})
 # 일단 관리자는 이따가..
 
 
-# 선수 검색 
+
+# 🔴 선수 검색 🔴
 # /players ? player_name = "dwadaw"
 # 즉, url에 파라미터와 값을 함께 전달하는 형식 
 # 글자 부분으로 입력하면 바로 값 return해줌 
@@ -200,3 +195,7 @@ def search_result():
 # Object of type Cursor is not JSON serializable
 # result = playercol.find({}, {"_id" : 0})
     # return jsonify(list(result))
+
+
+# flask run이 갑자기 안 됨 => 에러 메시지도 안 뜸!
+# 다 끄고 다시 켜니까 됐음 

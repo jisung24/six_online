@@ -12,7 +12,11 @@
         href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css" />
-    <script src="../static/js/common.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
     <title>soccer player</title>
 </head>
 
@@ -33,10 +37,8 @@
                 <p>ID <input type="text" id="userID" placeholder="아이디를 입력하세요" name="userID"></p>
                 <p>PW <input type="password" id="userPW" placeholder="비밀번호를 입력하세요" name="userPW"></p>
                 <div class="btn-box">
-                    <input type="submit" id="login" value="LOGIN">
-                    <button id="join">
-                        <a href="/sign-up/index">회원가입</a>
-                    </button>
+                    <button type="button" id="login" value="LOGIN" onclick = "loginClick()">로그인</button>
+                    <a href="/sign-up/index">회원가입</a>
                 </div>
             </form>
             <!-- join
@@ -53,6 +55,42 @@
             </div> -->
         </div>
     </div>
+
+
+
+    <script>
+        
+        let userID = document.getElementById('userID')
+        let userPW = document.getElementById('userPW')
+        
+        function loginClick(){
+            if(userID.value === '' || userPW.value === '') {
+                alert('ID와 PW 모두 입력하셔야 합니다!');
+            }else{
+                $.ajax({
+                type: "POST",
+                url: "/api/login",
+                data: {
+                    userID : userID.value,
+                    userPW : userPW.value,
+                },
+                success: function(response){
+                    let access_token = response['token']
+                    // ❗️로그인 성공 시❗️
+                        if(response['result'] == 'success') { 
+                            $.cookie('mytoken', response['token'], {path: '/'});
+                            window.location.replace("/")
+                        }
+                        // ❗️로그인 실패 시❗️ 
+                        else { 
+                            alert("id or pw가 틀렸습니다.");
+                        }
+                }
+                })
+            }
+            
+        }   
+    </script>
 </body>
 
 </html>

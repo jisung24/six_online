@@ -12,7 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css"/>
-    <script src="../static/js/common.js"></script>
+    <script defer src="../static/js/common.js"></script>
     <title>soccer player</title>
 </head>
 
@@ -65,12 +65,12 @@
                     <!-- <button type="button" class="edit">
                         <i class="fas fa-pen"></i>
                     </button> -->
-                    <div class="imgbox"><img src="./img/player.jfif" class="player-img"></div>
-                    <p class="name">{{ playerArr[i].player_name }}</p>
-                    <p class="team">{{ playerArr[i].player_team }}</p>
-                    <p class="back-number">{{ playerArr[i].player_back_number }}</p>
-                    <p class="position">{{ playerArr[i].player_position }}</p>
-                    <p class="age">{{ playerArr[i].player_age }}</p>
+                    <div class="imgbox"><img src="{{ playerArr[i].player_photo }}" class="player-img"></div>
+                    <p class="name pro">이름 : {{ playerArr[i].player_name }}</p>
+                    <p class="team pro">팀 : {{ playerArr[i].player_team }}</p>
+                    <p class="back-number pro">등번호 : {{ playerArr[i].player_back_number }}</p>
+                    <p class="position pro">포지션 : {{ playerArr[i].player_position }}</p>
+                    <p class="age pro">나이 : {{ playerArr[i].player_age }}</p>
                 </div>
                 {% endfor %}
             </div>
