@@ -20,6 +20,7 @@
     <script defer src="../static/js/common.js"></script>
     <script defer src="../static/js/deletePlayer.js"></script>
     <script defer src="../static/js/logout.js"></script>
+    <script defer src="../static/js/likes.js"></script>
     <title>soccer player</title>
 </head>
 
@@ -46,7 +47,9 @@
                     <!-- 어차피 맨 처음 로그인 페이지로 가서 안 할 수가 없음..!  -->
                 </li>
             </ul>
-            <button type="button" class="all_like"><i class="fas fa-heart"></i></button>
+            <!-- <button type="button" class="all_like">
+                <i class="fas fa-heart"></i>
+            </button> -->
         </div>
         <div class="contents">
             <!-- search area -->
@@ -69,10 +72,11 @@
                 {% for i in range(0, playerArr | length) %}
                 <div class="card playerCard" data-id='{{ playerArr[i].player_id }}'>
                     <!-- 사용자 : 좋아요 버튼 오른쪽 상단에 노출 -->
-                    <button type="button" class="like">
+                    <!-- 🔴 좋아요 기능 🔴 -->
+                    <!-- <button type="button" class="like"> -->
                         <!-- <i class="fas fa-heart"></i>-->
-                        <i class="far fa-heart likeIcon"></i>
-                    </button>
+                        <!-- <i class="far fa-heart likeIcon"></i>
+                    </button> -->
 
                     <!-- 관리자 : edit버튼 오른쪽 상단에 노출 -->
                     {% if role == 'admin' %}

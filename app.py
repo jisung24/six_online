@@ -159,10 +159,10 @@ def sign_in():
     result = usercol.find_one({'userID': username_receive, 'userPW': pw_hash})
 
     if result is not None: # result 찾았음 
-        print(f"result >> {result}") # user 찾아짐! 
         payload = {
             'userID': username_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=10)  # 로그인 24시간 유지
+            # 로그인 지속기간 1시간으로 설정해놓음
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60*60)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -195,29 +195,52 @@ def search_result():
 @app.route('/players/<string:id>', methods = ['POST'])
 def delete_player(id):
     player_id = id
-    print(player_id + "번!!")
     find_player = playercol.find_one({'player_id' : player_id}, {'_id' : 0})
-    print(find_player)
+    
     playercol.delete_one(find_player)
     return redirect(url_for('print_hello'))
     # findPlayers = playercol.find_one({ 'player_id' : })
 
 
 
+# 🔴 선수 좋아요 🔴
+# 일단 userId를 알아야 하고, 그 유저의 userLikes에 넣어야 한다.
+# 등록이니까 일단 post요청을 해 준다. 
+# @app.route('/likes/<string:id>', methods = ['POST'])
+# # front에서 id라는 변수에 값을 담아서 보내줘야 한다. 
+# def add_user_like(id): # id파라미터에 넣어줘야 한다! 
+#     try:
+#         token_receive = request.cookies.get('mytoken')
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         print(payload)  # {'userID': 'user12', 'exp': 1680158021}
+#         # 로그인 된 사용자를 찾는다. 
+
+#         # 선수를 찾아주고 playerArr에 넣어준다!
+#         findPlayer = playercol.find_one({ 'player_id' : id }, {'_id' : 0} ) # _id는 안 가져오는걸로! 
+#         print(usercol)
+#         # result = usercol['userLikes'].insert_one( findPlayer ) # 찾은 선수를 넣어준다..! 
+#         # 1. id가 똑같은 선수를 찾는다.! 
+#         # return findPlayer
+# # userLikes 배열에 넣기 
+#     except jwt.ExpiredSignatureError:
+#         return redirect(url_for("login_page", msg="로그인 시간이 만료되었습니다!"))
+#     except jwt.exceptions.DecodeError:
+#         return redirect(url_for("login_page", msg="로그인 정보가 존재하지 않습니다!"))
 
 
 
-# argument of type 'NoneType' is not iterable : 객체에서 얻어오는 과정에서 나오는 error
-# None은 아무것도 return하지 않음..! 
-# result is not None로 해주니까 처리가 됨! 
 
-# id pw 비교작업이 끝난 로그인 할 때
-# ❗️missing authorization header flask❗️
+# # argument of type 'NoneType' is not iterable : 객체에서 얻어오는 과정에서 나오는 error
+# # None은 아무것도 return하지 않음..! 
+# # result is not None로 해주니까 처리가 됨! 
+
+# # id pw 비교작업이 끝난 로그인 할 때
+# # ❗️missing authorization header flask❗️
 
 
-# 'JWTManager' object has no attribute 'encode'
+# # 'JWTManager' object has no attribute 'encode'
 
-# 이유없이 안 뜸... 
+# # 이유없이 안 뜸... 
 
 
 # Object of type Cursor is not JSON serializable
