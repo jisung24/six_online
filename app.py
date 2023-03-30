@@ -250,3 +250,6 @@ def delete_player(id):
 
 # flask run이 갑자기 안 됨 => 에러 메시지도 안 뜸!
 # 다 끄고 다시 켜니까 됐음 
+
+if __name__ == '__main__':
+    app.run()
