@@ -12,7 +12,7 @@ import hashlib
 
 app = Flask(__name__) # flask를 실행 
 
-JWT_SECRET_KEY = 'G6'
+# JWT_SECRET_KEY = 'G6'
 
 client = MongoClient('localhost', 27017)
 userDB = client['user'] # 회원 db (관리자 사용자 싹 다 하나로 구분없이 모을게요!)

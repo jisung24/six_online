@@ -10,6 +10,7 @@ delete_button.forEach((value, index) => {
     let playerID = cards[index].getAttribute("data-id");
     // alert(playerID);
 
+    /* 비동기 async await */
     fetch(`/players/${playerID}`, {
       method: "POST",
       body: {
